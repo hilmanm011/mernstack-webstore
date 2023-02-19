@@ -1,12 +1,36 @@
 import Image from "next/image"
 import Link from "next/link"
+import Cookies from "js-cookie"
+import { useEffect, useState } from "react"
+import jwtDecode from 'jwt-decode'
+import { JWTPayloadTypes, UserTypes } from "../../../services/data-types"
+import { useRouter } from "next/router"
 
-interface AuthProps {
-    isLogin?: boolean
-}
+const Auth = () => {
+    const [isLogin, setIsLogin] = useState(false)
+    const [user, setUser] = useState({
+        avatar: "",
+    })
+    
+    useEffect(()=>{
+        const token = Cookies.get('token')
+        if (token) {
+            const jwtToken = atob(token)
+            const payload: JWTPayloadTypes = jwtDecode(jwtToken)
+            const userFromPayload: UserTypes = payload.player
+            const ROOT_IMG = process.env.NEXT_PUBLIC_IMG
+            user.avatar = `${ROOT_IMG}/${userFromPayload.avatar}`
+            setIsLogin(true)
+            setUser(user)
 
-const Auth = (props: Partial<AuthProps>) => {
-    const { isLogin } = props
+        }
+    }, [])
+    const router = useRouter()
+    const onLogout = ()=>{
+        Cookies.remove('token')
+        setIsLogin(false)
+        router.push('/')
+    }
 
     if (isLogin) {
         return (
@@ -15,8 +39,11 @@ const Auth = (props: Partial<AuthProps>) => {
                 <div>
                     <a className="dropdown-toggle ms-lg-40" role="button" id="dropdownMenuLink"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <Image src="/img/avatar-1.png" className="rounded-circle" width={40} height={40}
-                            alt="Profile"/>
+                        <img 
+                        src={user.avatar} 
+                        className="rounded-circle" 
+                        width={40} height={40}
+                        alt="Profile"/>
                     </a>
 
                     <ul className="dropdown-menu border-0" aria-labelledby="dropdownMenuLink">
@@ -35,10 +62,8 @@ const Auth = (props: Partial<AuthProps>) => {
                                 <a className="dropdown-item text-lg color-palette-2">Account Settings</a>
                             </Link>
                         </li>
-                        <li>
-                            <Link href="/sign-in" legacyBehavior>
-                                <a className="dropdown-item text-lg color-palette-2">Log Out</a>
-                            </Link>
+                        <li onClick={onLogout}>
+                            <a className="dropdown-item text-lg color-palette-2">Log Out</a>
                         </li>
                     </ul>
                 </div>

@@ -18,6 +18,8 @@ import '../styles/edit-profile.css'
 import '../styles/navbar-log-in.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -42,6 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossOrigin="anonymous" async>
     </script>
     <Component {...pageProps} />
+    <ToastContainer />
     </>
   )
 }

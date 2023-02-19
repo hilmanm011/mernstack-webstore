@@ -4,4 +4,13 @@ const nextConfig = {
   swcMinify: true,
 }
 
-module.exports = nextConfig
+const images = {
+  domains: ['34.101.87.163:5000']
+}
+
+
+
+module.exports = {
+  nextConfig,
+  images
+}
