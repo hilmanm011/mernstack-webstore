@@ -1,16 +1,17 @@
 import cx from 'classnames'
 interface ButtonTabProps {
     title: string,
-    active?: boolean
+    active?: boolean,
+    onClick: ()=> void
 }
 const ButtonTab = (props: Partial<ButtonTabProps>) => {
-    const { title, active } = props
+    const { title, active, onClick } = props
     const btnClass = cx({
         'btn btn-status rounded-pill text-sm me-3' : true,
         'btn-active': active
     })
     return (
-        <a data-filter="*" href="#" className={btnClass}>{title}</a>
+        <button onClick={onClick} type='button' className={btnClass}>{title}</button>
     )
 }
 

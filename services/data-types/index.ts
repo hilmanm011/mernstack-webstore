@@ -52,10 +52,43 @@ export interface JWTPayloadTypes {
 }
 
 export interface CheckoutTypes {
-    voucher : string,
-    nominal: string,
-    payment: string,
-    bank: string,
-    name: string,
+    voucher : string
+    nominal: string
+    payment: string
+    bank: string
+    name: string
     accountUser: string
+}
+
+export interface HistoryVoucherTopupTypes {
+    category: string
+    gameName: string
+    coinQuantity: string
+    coinName: string
+    price: number
+    thumbnail: string
+}
+
+export interface HistoryPaymentTypes {
+    name: string
+    type: string
+    bankName: string
+    noRekening: string
+}
+
+export interface HistoryTransactionsTypes {
+    _id: string
+    historyVoucherTopup: HistoryVoucherTopupTypes
+    status: string
+    value: number
+    accountUser: string
+    tax: number
+    name: string,
+    historyPayment: HistoryPaymentTypes
+}
+
+export interface TopUpCategoriesType {
+    _id: string
+    value: number
+    name: string
 }

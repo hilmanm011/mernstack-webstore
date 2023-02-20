@@ -11,7 +11,7 @@ const GameItem = (props: GameItemProps) => {
     const ROOT_IMG = process.env.NEXT_PUBLIC_IMG
     const myLoader = ({ src, width, quality }) => {
         return `${ROOT_IMG}/${src}?w=${width}&q=${quality || 75}`
-      }
+    }
     return (
         <div className="featured-game-card position-relative">
             <Link href={`/detail/${id}`} legacyBehavior>

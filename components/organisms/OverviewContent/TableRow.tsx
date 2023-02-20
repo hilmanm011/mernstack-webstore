@@ -1,25 +1,30 @@
 import Image from "next/image"
 import cx from 'classnames'
+import { NumericFormat } from "react-number-format"
+
 interface TableRowProps {
     title: string,
     categori: string,
-    item: number,
+    item: string,
     price: number,
-    status: 'Pending' | 'Success' | 'Failed',
+    status: string,
     image: string
 }
 const TableRow = (props: TableRowProps) => {
     const { title, categori, item, price, status,image } = props
     const statusClass = cx({
         'float-start icon-status' : true,
-        'pending': status === 'Pending',
-        'success': status === 'Success',
-        'failed': status === 'Failed'
+        'pending': status === 'Pending' || 'pending',
+        'success': status === 'Success' || 'success',
+        'failed': status === 'Failed' || 'failed'
     })
+    const myLoader = ({ src, width, quality }) => {
+        return `${src}?w=${width}&q=${quality || 75}`
+    }
     return (
         <tr className="align-middle">
             <th scope="row">
-                <Image className="float-start me-3 mb-lg-0 mb-3" src={`/img/${image}.png`}
+                <Image loader={myLoader} className="float-start me-3 mb-lg-0 mb-3" src={image}
                     width={80} height={60} alt="game thumb"/>
                 <div className="game-title-header">
                     <p className="game-title fw-medium text-start color-palette-1 m-0">{title}</p>
@@ -27,10 +32,18 @@ const TableRow = (props: TableRowProps) => {
                 </div>
             </th>
             <td>
-                <p className="fw-medium color-palette-1 m-0">{item} Gold</p>
+                <p className="fw-medium color-palette-1 m-0">{item}</p>
             </td>
             <td>
-                <p className="fw-medium text-start color-palette-1 m-0">{price}</p>
+                <p className="fw-medium text-start color-palette-1 m-0">
+                    <NumericFormat 
+                    value={price} 
+                    prefix="Rp. " 
+                    displayType="text" 
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    />
+                </p>
             </td>
             <td>
                 <div>
