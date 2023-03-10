@@ -11,8 +11,6 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log(req.query.status)
-
   let dataAnggota = [
     { name: 'John Doe',
       age: 18,

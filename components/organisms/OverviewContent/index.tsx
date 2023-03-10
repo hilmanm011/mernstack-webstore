@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { HistoryTransactionsTypes, TopUpCategoriesType } from "../../../services/data-types"
@@ -16,7 +15,6 @@ const OverviewContent = () => {
          if (response.error) {
             toast.error(response.message)
          } else {
-            console.log('data', response.data);
             setCount(response.data.count)
             setData(response.data.data)
          }

@@ -29,7 +29,6 @@ interface GetServerSideProps {
 }
 
 export async function getServerSideProps({ req, params} : GetServerSideProps) {
-  console.log('params', params);
   const { idTrx } = params
   const { token } = req.cookies
   if (!token) {

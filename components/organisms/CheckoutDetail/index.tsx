@@ -30,8 +30,6 @@ const CheckoutDetail = () => {
     const dataFromLocal = localStorage.getItem('data-topup')
     const dataTopUpLocal = JSON.parse(dataFromLocal)
     setDataTopUpItem(dataTopUpLocal)
-    console.log('data top up :', dataTopUpLocal);
-    
 
   },[])
 

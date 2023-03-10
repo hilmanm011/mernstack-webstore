@@ -1,45 +1,26 @@
-import { useRouter } from "next/router"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect } from "react"
 import Footer from "../../components/organisms/Footer"
 import Navbar from "../../components/organisms/Navbar"
 import TopUpForm from "../../components/organisms/TopUpForm"
 import TopUpItem from "../../components/organisms/TopUpItem"
-import { getDetailVoucher } from "../../services/player"
+import { GemaItemTypes, NominalsTypes, PaymentTypes } from "../../services/data-types"
+import { getDetailVoucher, getFeaturedGame } from "../../services/player"
 
-const Detail = () => {
+interface DetailProps {
+    dataItem: GemaItemTypes;
+    nominals: NominalsTypes[];
+    payments: PaymentTypes[]
+}
 
-    const { query, isReady } = useRouter()
-    const [dataItem, setDataItem] = useState({
-        name: '',
-        thumbnail: '',
-        category: {
-            name: ''
-        }
-    })
-
-    const [nominals, setNominals] = useState([])
-    const [payments, setPayments] = useState([])
-
-    const getVoucherDetailAPI = useCallback(async(id)=>{
-        const data = await getDetailVoucher(id)
-        setDataItem(data.voucher)
-        setNominals(data.nominal)
-        setPayments(data.payment)
-        console.log('data==>');
-        
-        console.log(data)
-        localStorage.setItem('data-item', JSON.stringify(data))
-        
-    },[])
-
+const Detail = ({dataItem, nominals,payments}: DetailProps) => {
     useEffect(()=>{
-        if (isReady) {
-            console.log('router sudah siap', query);
-            getVoucherDetailAPI(query.id)
-            
+        const data = {
+            voucher: dataItem,
+            nominals,
+            payments
         }
-    }, [isReady])
-
+        localStorage.setItem('data-item', JSON.stringify(data))
+    }, [])
     return (
         <>
         <Navbar />
@@ -64,6 +45,40 @@ const Detail = () => {
         <Footer />
         </>
     )
+}
+
+export async function getStaticPaths() {
+    const data = await getFeaturedGame()
+    const paths = data.map((item: GemaItemTypes)=>{
+        return {
+            params: {
+                id: item._id
+            }
+        }
+    })
+    return {
+        paths,
+        fallback: false
+    }
+}
+
+interface GetStaticProps {
+    params: {
+        id: string
+    }
+}
+
+export async function getStaticProps({params} : GetStaticProps) {
+    const  { id } = params
+    const data = await getDetailVoucher(id)
+    return {
+        props: {
+            dataItem: data.voucher,
+            nominals: data.nominal,
+            payments: data.payment
+        }
+    }
+
 }
 
 export default Detail

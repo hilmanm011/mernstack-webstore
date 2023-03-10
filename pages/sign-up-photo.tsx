@@ -48,7 +48,6 @@ const SignUpPhoto = () => {
         data.append('favorite', favorite)
 
         const result = await setSignUp(data)
-        console.log('signup', result);
         if (result.error) {
             toast.error(result.message)
         } else {
